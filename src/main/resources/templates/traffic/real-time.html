@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Real-Time Traffic with WebSockets</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+
+<h1>Real-Time Website Traffic</h1>
+<p>Current Visits Today: <span id="visitCount">0</span></p>
+
+<script>
+    var stompClient = null;
+
+    function connect() {
+        var socket = new SockJS('/websocket');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+
+            // Subscribe to the /topic/traffic endpoint to receive updates
+            stompClient.subscribe('/topic/traffic', function (message) {
+                // Update the visit count with the received message
+                $('#visitCount').text(message.body);
+            });
+        });
+    }
+
+    // Connect to WebSocket when the page loads
+    $(document).ready(function() {
+        connect();
+    });
+</script>
+
+</body>
+</html>

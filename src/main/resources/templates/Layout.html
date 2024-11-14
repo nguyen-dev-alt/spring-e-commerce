@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Của Tôi - Sản Phẩm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link th:fragment="link-css" rel="stylesheet" th:href="@{/css/main.css}">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="flex-grow container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Sản Phẩm Nổi Bật</h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div th:each="product, iterStat : ${products}" th:if="${iterStat.index < 12}"
+             class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+            <div class="relative pt-[75%] overflow-hidden group">
+                <img th:src="@{'/' + ${product.image}}"  alt="Hình ảnh sản phẩm"
+                     class="absolute top-0  object-cover group-hover:scale-110 transition-transform duration-300"/>
+                <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <a th:href="@{/products/{id}(id=${product.id})}" class="bg-white text-gray-800 py-2 px-4 rounded-full font-medium hover:bg-gray-100 transition-colors duration-200">
+                        Xem chi tiết
+                    </a>
+
+                </div>
+            </div>
+            <div class="p-4 flex flex-col flex-grow">
+                <h2 th:text="${product.name}" class="text-xl font-semibold mb-2 text-gray-800 hover:text-blue-600 transition-colors duration-200 truncate">Tên sản phẩm</h2>
+                <p th:text="${product.description}" class="text-sm text-gray-600 mb-4 line-clamp-2 flex-grow">Mô tả sản phẩm</p>
+                <div class="flex items-center justify-between mt-auto">
+                    <p th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'"
+                       class="text-lg font-bold text-blue-600">Giá sản phẩm</p>
+                    <form th:action="@{/cart/add}" method="post">
+                        <input type="hidden" name="productId" th:value="${product.id}" />
+                        <input type="hidden" name="quantity" value="1" />
+                        <button class="bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            Thêm vào giỏ
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/js/toggle.js}" th:fragment="common-js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Order History</title>
+  <th:block th:replace="~{Layout :: link-css}"></th:block>
+</head>
+<body>
+
+<div th:replace="~{users/user-profile :: sidebar}"></div>
+
+<div class="ml-64 flex-1 p-10">
+  <h2 class="text-3xl font-extrabold text-gray-900 mb-6">Order History</h2>
+
+  <div th:if="${orders.size() == 0}" class="bg-white shadow sm:rounded-lg">
+    <div class="px-4 py-5 sm:p-6">
+      <p class="text-lg text-gray-700">You have no orders.</p>A
+    </div>
+  </div>
+
+  <div th:if="${orders.size() > 0}" class="bg-white shadow sm:rounded-lg">
+    <ul class="divide-y divide-gray-200">
+      <li th:each="order : ${orders}" class="px-4 py-4 sm:px-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-medium text-indigo-600">Order ID: <span th:text="${order.id}"></span></h3>
+            <td class="px-6 py-4 whitespace-nowrap" th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy')}">Order Date</td>
+
+            <p class="text-sm text-gray-500">Total: <span th:text="${order.totalAmount}"></span> VND</p>
+            <p class="text-sm text-gray-500">Status: <span th:text="${order.orderStatus}"></span></p>
+          </div>
+          <div>
+            <a th:href="@{/orders/{orderId}(orderId=${order.id})}" class="text-blue-600 hover:text-blue-800">View Details</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="layout :: common-js"></div>
+</body>
+</html>

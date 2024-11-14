@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Order Success</title>
+  <th:block th:replace="~{Layout :: link-css}"></th:block>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <h2 class="text-3xl font-extrabold text-gray-900 mb-6">Payment Success</h2>
+
+  <div class="bg-white shadow sm:rounded-lg">
+    <div class="px-4 py-5 sm:p-6">
+      <p class="text-lg text-gray-700">Thank you for confirming your order. Your payment has been successfully processed!</p>
+    </div>
+  </div>
+
+  <a th:href="@{/}" class="mt-6 block text-blue-600 hover:text-blue-800">Go to Homepage</a>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="layout :: common-js"></div>
+</body>
+</html>
